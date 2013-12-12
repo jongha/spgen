@@ -9,14 +9,14 @@ The program requires Python 2.x or Python 3.x.
 You must install a [MySQL connector for python](http://dev.mysql.com/downloads/connector/python/).
 
 ## Usage
-   
+
 ### From the command line
 
     usage: spgen.py [-h] [-P PORT] [-u USER] [-p PASSWORD] host database
 
     $ spgen.py -uim -ppw localhost mydb
-    
-    
+
+
 ## License
 
 spgen is available under the terms of the MIT License.

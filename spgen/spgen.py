@@ -98,7 +98,7 @@ class Spgen(object):
             self.tables.append(data[0])
 
         modes = ('add', 'update', 'delete')
-        
+
         count = 0
         total = len(self.tables) * len(modes)
         for table in self.tables:
@@ -113,14 +113,14 @@ class Spgen(object):
                 if script is not None:
                     cursor.execute(PROCEDURE_DROP_TEMPLATE % { 'name': mode + table })
                     cursor.execute(script)
-                    
+
                 count += 1
                 sys.stdout.write('\rCreating... %d%%' % int(float(count) / float(total) * 100))
                 sys.stdout.flush()
-                
+
         sys.stdout.write('\n')
         sys.stdout.flush()
-        
+
         print('Almost Done.')
         cursor.close()
 
