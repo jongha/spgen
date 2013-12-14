@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import spgen.spgen
+from wgety.wgety import Spgen
 
 spgen = Spgen()
 spgen.connect(
