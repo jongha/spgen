@@ -163,10 +163,10 @@ if __name__ == '__main__':
             database = args.database[0],
             port = args.port,
             user = args.user,
-            password = args.password);
+            password = args.password)
 
-        spgen.build();
-        spgen.close();
+        spgen.build()
+        spgen.close()
         print('Done.')
     else:
         print(args.accumulate(args.integers))
