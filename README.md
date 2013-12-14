@@ -16,6 +16,30 @@ You must install a [MySQL connector for python](http://dev.mysql.com/downloads/c
 
     $ spgen.py -uim -ppw localhost mydb
 
+### Using a Library
+
+Check out the run.py file.
+
+```
+from spgen.spgen import Spgen
+
+try:
+    spgen = Spgen()
+    spgen.connect(
+        host = 'IP address',
+        database = 'database name',
+        port = 3306,
+        user = 'user name',
+        password = 'user password');
+
+    spgen.build()
+    spgen.close()
+
+    exit(1)
+
+except:
+    exit(0)
+```
 
 ## License
 

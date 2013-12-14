@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='spgen',
-      version='1.0.1',
+      version='1.0.2',
       description='Stored Procedure Generator',
       long_description='Stored Procedure Generator for Python',
       license='MIT',
