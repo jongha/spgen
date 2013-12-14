@@ -7,8 +7,7 @@ python:
 # command to install dependencies
 install:
    - python setup.py -q install
-#  - "pip install ."
-#  - "pip install -r requirements.txt"
+   - pip install mysql-connector
 before_script:
   - mysql -e 'create database spgen_test;'
   - mysql -e 'create table spgen_test.example(id int, data varchar(100));'
@@ -19,4 +18,4 @@ test:
   encoding: utf8
   
 # command to run tests
-script: 'python ./run.py'
+script: 'python run.py'
