@@ -7,7 +7,7 @@ python:
 # command to install dependencies
 install:
    - python setup.py -q install
-   - pip install mysql-connector
+   - pip install mysql-connector-python
 before_script:
   - mysql -e 'create database spgen_test;'
   - mysql -e 'create table spgen_test.example(id int, data varchar(100));'
