@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-import spgen.spgen
-from wgety.wgety import Spgen
+from spgen.spgen import Spgen
 
 spgen = Spgen()
 spgen.connect(
@@ -10,7 +9,7 @@ spgen.connect(
     user = 'travis',
     password = None);
 
-spgen.build();
-spgen.close();
+spgen.build()
+spgen.close()
 
 exit(1)

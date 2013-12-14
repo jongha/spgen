@@ -63,6 +63,9 @@ class Spgen(object):
                 else:
                     none_key_columns.append(c)
 
+            if len(key_columns) == 0:
+                return None;
+                
             return PROCEDURE_CREATE_TEMPLATE % {
                 'name': mode + table,
                 'param': ',\n'.join(map(lambda x: 'p_%s %s' % (x[0], x[1]), columns)),
