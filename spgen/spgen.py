@@ -65,7 +65,7 @@ class Spgen(object):
 
             if len(key_columns) == 0:
                 return None;
-                
+
             return PROCEDURE_CREATE_TEMPLATE % {
                 'name': mode + table,
                 'param': ',\n'.join(map(lambda x: 'p_%s %s' % (x[0], x[1]), columns)),
@@ -94,7 +94,7 @@ class Spgen(object):
                     )
                 };
 
-    def build(self):
+    def build(self, debug=False):
         cursor = self.cnx.cursor()
         cursor.execute('show tables')
         for data in cursor:
@@ -114,8 +114,15 @@ class Spgen(object):
             for mode in modes:
                 script = self.create(mode, table, columns)
                 if script is not None:
-                    cursor.execute(PROCEDURE_DROP_TEMPLATE % { 'name': mode + table })
+                    drop_script = PROCEDURE_DROP_TEMPLATE % { 'name': mode + table }
+
+                    cursor.execute(drop_script)
                     cursor.execute(script)
+
+                    if debug: # show script for debug
+                        print('\n')
+                        print(drop_script)
+                        print(script)
 
                 count += 1
                 sys.stdout.write('\rCreating... %d%%' % int(float(count) / float(total) * 100))
@@ -157,6 +164,7 @@ if __name__ == '__main__':
     parser.add_argument('-P', '--port', default=3306, help='Port number to use for connection or 0 for default.')
     parser.add_argument('-u', '--user', help='User for login.')
     parser.add_argument('-p', '--password', help='Password to use when connection to server.')
+    parser.add_argument('-d', '--debug', default=False, action='store_true', help='Set Debug mode.')
     args = parser.parse_args()
 
     if l_argv > 1:
@@ -168,9 +176,8 @@ if __name__ == '__main__':
             user = args.user,
             password = args.password)
 
-        spgen.build()
+        spgen.build(debug=args.debug)
         spgen.close()
         print('Done.')
     else:
         print(args.accumulate(args.integers))
-

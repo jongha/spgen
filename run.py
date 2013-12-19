@@ -9,8 +9,8 @@ try:
         database = 'spgen_test',
         user = 'travis',
         password = None);
-
-    spgen.build()
+    
+    spgen.build(debug=False)
     spgen.close()
 
     exit(1)

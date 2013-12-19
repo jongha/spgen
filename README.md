@@ -12,9 +12,21 @@ You must install a [MySQL connector for python](http://dev.mysql.com/downloads/c
 
 ### From the command line
 
-    usage: spgen.py [-h] [-P PORT] [-u USER] [-p PASSWORD] host database
+    usage: spgen.py [-h] [-P PORT] [-u USER] [-p PASSWORD] [-d] host database
 
     $ spgen.py -uim -ppw localhost mydb
+
+    positional arguments:
+        host                  Host to connect.
+        database              Database name.
+
+    optional arguments:
+        -h, --help            show this help message and exit
+        -P PORT, --port PORT  Port number to use for connection or 0 for default.
+        -u USER, --user USER  User for login.
+        -p PASSWORD, --password PASSWORD Password to use when connection to server.
+        -d, --debug           Set Debug mode.
+
 
 ### Using a Library
 
@@ -32,7 +44,7 @@ try:
         user = 'user name',
         password = 'user password');
 
-    spgen.build()
+    spgen.build(debug=False) # debug argument is option
     spgen.close()
 
     exit(1)
