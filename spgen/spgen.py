@@ -96,9 +96,11 @@ class Spgen(object):
 
     def build(self, debug=False):
         cursor = self.cnx.cursor()
-        cursor.execute('show tables')
-        for data in cursor:
-            self.tables.append(data[0])
+
+        if not self.tables:
+            cursor.execute('show tables')
+            for data in cursor:
+                self.tables.append(data[0])
 
         modes = ('add', 'update', 'delete')
 
@@ -134,7 +136,7 @@ class Spgen(object):
         print('Almost Done.')
         cursor.close()
 
-    def connect(self, host, database, port=3306, user=None, password=None):
+    def connect(self, host, database, tables=[], port=3306, user=None, password=None):
         print('Connection Opening... (%s@%s:%s/%s)' % (user, host, port, database));
         try:
             self.cnx = mysql.connector.connect(
@@ -143,6 +145,7 @@ class Spgen(object):
                 port=port,
                 host=host,
                 database=database)
+            self.tables = tables
 
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -161,17 +164,21 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Stored Procedure Generator for MySQL.')
     parser.add_argument('host', metavar='host', nargs=1, help='Host to connect.')
     parser.add_argument('database', metavar='database', nargs=1, help='Database name.')
+    parser.add_argument('tables', metavar='tables', nargs='*', help='Table name.')
     parser.add_argument('-P', '--port', default=3306, help='Port number to use for connection or 0 for default.')
     parser.add_argument('-u', '--user', help='User for login.')
     parser.add_argument('-p', '--password', help='Password to use when connection to server.')
     parser.add_argument('-d', '--debug', default=False, action='store_true', help='Set Debug mode.')
     args = parser.parse_args()
 
+
+    print args
     if l_argv > 1:
         spgen = Spgen()
         spgen.connect(
             host = args.host[0],
             database = args.database[0],
+            tables = args.tables,
             port = args.port,
             user = args.user,
             password = args.password)
