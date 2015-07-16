@@ -11,6 +11,7 @@ install:
 before_script:
   - mysql -e 'create database spgen_test;'
   - mysql -e 'create table spgen_test.example(id int, data varchar(100));'
+  - mysql -e 'create table spgen_test.example1(id int, data varchar(100));'
 test:
   adapter: mysql2
   database: spgen_test
