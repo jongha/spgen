@@ -4,9 +4,11 @@ python:
   - "2.7"
   - "3.2"
   - "3.3"
+  - "3.4"
 # command to install dependencies
 install:
    - python setup.py -q install
+   - pip install --upgrade pip
    - pip install --allow-external mysql-connector-python mysql-connector-python
 before_script:
   - mysql -e 'create database spgen_test;'
