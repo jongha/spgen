@@ -32,7 +32,7 @@ class Spgen(object):
         return
 
     def close(self):
-        print('Connection Closing...');
+        print('Connection Closing...')
         if self.cnx is not None:
             self.cnx.close()
 
@@ -51,7 +51,7 @@ class Spgen(object):
                     ', '.join(map(lambda x: x[0], selected)),
                     ', '.join(map(lambda x: 'p_%s' % (x[0]), selected))
                     )
-                };
+                }
 
         elif mode == 'update':
             key_columns = []
@@ -64,7 +64,7 @@ class Spgen(object):
                     none_key_columns.append(c)
 
             if len(key_columns) == 0:
-                return None;
+                return None
 
             return PROCEDURE_CREATE_TEMPLATE % {
                 'name': mode + table,
@@ -74,7 +74,7 @@ class Spgen(object):
                     ', '.join(map(lambda x: '%(name)s = p_%(name)s' % { 'name': x[0] }, none_key_columns)),
                     ' and '.join(map(lambda x: '%(name)s = p_%(name)s' % { 'name': x[0] }, key_columns))
                     )
-                };
+                }
 
         elif mode == 'delete':
             key_columns = []
@@ -83,7 +83,7 @@ class Spgen(object):
                     key_columns.append(c)
 
             if len(key_columns) == 0:
-                return None;
+                return None
 
             return PROCEDURE_CREATE_TEMPLATE % {
                 'name': mode + table,
@@ -92,15 +92,16 @@ class Spgen(object):
                     table,
                     ' and '.join(map(lambda x: '%(name)s = p_%(name)s' % { 'name': x[0] }, key_columns))
                     )
-                };
+                }
 
     def build(self, debug=False):
         cursor = self.cnx.cursor()
 
-        if not self.tables:
-            cursor.execute('show tables')
-            for data in cursor:
-                self.tables.append(data[0])
+
+        cursor.execute('show tables')
+        db_tables = [data[0] for data in cursor]
+
+        self.tables = set(self.tables).intersection(set(db_tables))
 
         modes = ('add', 'update', 'delete')
 
@@ -111,7 +112,7 @@ class Spgen(object):
 
             columns = []
             for data in cursor:
-                columns.append(data);
+                columns.append(data)
 
             for mode in modes:
                 script = self.create(mode, table, columns)
@@ -137,7 +138,7 @@ class Spgen(object):
         cursor.close()
 
     def connect(self, host, database, tables=[], port=3306, user=None, password=None):
-        print('Connection Opening... (%s@%s:%s/%s)' % (user, host, port, database));
+        print('Connection Opening... (%s@%s:%s/%s)' % (user, host, port, database))
         try:
             self.cnx = mysql.connector.connect(
                 user=user,
@@ -157,14 +158,14 @@ class Spgen(object):
             else:
                 print(err)
 
-            exit(0);
+            exit(0)
 
 if __name__ == '__main__':
     l_argv = len(sys.argv)
     parser = argparse.ArgumentParser(description='Stored Procedure Generator for MySQL.')
     parser.add_argument('host', metavar='host', nargs=1, help='Host to connect.')
     parser.add_argument('database', metavar='database', nargs=1, help='Database name.')
-    parser.add_argument('tables', metavar='tables', nargs='*', help='Table name.')
+    parser.add_argument('tables', metavar='tables', nargs='*', help='Table names. e.g table1 table2')
     parser.add_argument('-P', '--port', default=3306, help='Port number to use for connection or 0 for default.')
     parser.add_argument('-u', '--user', help='User for login.')
     parser.add_argument('-p', '--password', help='Password to use when connection to server.')
@@ -172,16 +173,15 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
 
-    print args
     if l_argv > 1:
         spgen = Spgen()
         spgen.connect(
-            host = args.host[0],
-            database = args.database[0],
-            tables = args.tables,
-            port = args.port,
-            user = args.user,
-            password = args.password)
+            host=args.host[0],
+            database=args.database[0],
+            tables=args.tables,
+            port=args.port,
+            user=args.user,
+            password=args.password)
 
         spgen.build(debug=args.debug)
         spgen.close()
