@@ -12,13 +12,14 @@ You must install a [MySQL connector for python](http://dev.mysql.com/downloads/c
 
 ### From the command line
 
-    usage: spgen.py [-h] [-P PORT] [-u USER] [-p PASSWORD] [-d] host database
+    usage: spgen.py [-h] [-P PORT] [-u USER] [-p PASSWORD] [-d] host database [tables [tables ...]]
 
-    $ spgen.py -uim -ppw localhost mydb
+    $ spgen.py -uim -ppw localhost mydb table1 table2 
 
     positional arguments:
         host                  Host to connect.
         database              Database name.
+        tables                Table name. e.g table1 table2
 
     optional arguments:
         -h, --help            show this help message and exit
@@ -40,6 +41,7 @@ try:
     spgen.connect(
         host = 'IP address',
         database = 'database name',
+        tables = ['table1', 'table2'],
         port = 3306,
         user = 'user name',
         password = 'user password');
