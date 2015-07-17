@@ -2,15 +2,17 @@ language: python
 python:
   - "2.6"
   - "2.7"
-  - "3.2"
   - "3.3"
+  - "3.4"
 # command to install dependencies
 install:
    - python setup.py -q install
-   - pip install mysql-connector-python
+   - pip install --upgrade pip
+   - pip install --allow-external mysql-connector-python mysql-connector-python
 before_script:
   - mysql -e 'create database spgen_test;'
   - mysql -e 'create table spgen_test.example(id int, data varchar(100));'
+  - mysql -e 'create table spgen_test.example1(id int, data varchar(100));'
 test:
   adapter: mysql2
   database: spgen_test
